@@ -1049,40 +1049,73 @@
     .footer-bottom-links a:hover { color: var(--white); }
 
     /* ============================================================
-       WHATSAPP FLOAT
+       WHATSAPP CHAT WIDGET
     ============================================================ */
-    .whatsapp-float {
+    .whatsapp-widget-wrap {
       position: fixed;
-      bottom: 32px; right: 32px;
-      z-index: 999;
-      width: 58px; height: 58px;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      font-family: var(--font-sans);
+    }
+    .whatsapp-trigger-btn {
+      width: 60px;
+      height: 60px;
       background: #25D366;
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 6px 24px rgba(37,211,102,0.5);
-      transition: transform 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(37,211,102,0.45);
+      cursor: pointer;
+      position: relative;
+      border: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
-    .whatsapp-float:hover { transform: scale(1.1); }
-    .whatsapp-float svg { width: 30px; height: 30px; color: var(--white); }
-    .whatsapp-float::before {
+    .whatsapp-trigger-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 28px rgba(37,211,102,0.6);
+    }
+    .whatsapp-trigger-btn svg {
+      width: 32px;
+      height: 32px;
+      color: #FFFFFF;
+    }
+    .whatsapp-trigger-btn::before {
       content: '';
       position: absolute;
       inset: -6px;
       border: 2px solid #25D366;
       border-radius: 50%;
-      opacity: 0.5;
-      animation: pulse-ring 1.8s ease-in-out infinite;
+      opacity: 0.6;
+      animation: wa-pulse 2s ease-in-out infinite;
     }
-    @keyframes pulse-ring {
-      0% { transform: scale(1); opacity: 0.6; }
+    @keyframes wa-pulse {
+      0% { transform: scale(1); opacity: 0.7; }
       100% { transform: scale(1.4); opacity: 0; }
     }
-    .whatsapp-tooltip {
+    .wa-badge {
       position: absolute;
-      right: 70px;
+      top: -2px;
+      right: -2px;
+      width: 20px;
+      height: 20px;
+      background: #e11d48;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+    }
+    .wa-tooltip {
+      position: absolute;
+      right: 72px;
       top: 50%;
       transform: translateY(-50%);
-      background: var(--white);
+      background: #FFFFFF;
       color: var(--charcoal);
       font-size: 13px;
       font-weight: 600;
@@ -1092,9 +1125,196 @@
       white-space: nowrap;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
     }
-    .whatsapp-float:hover .whatsapp-tooltip { opacity: 1; }
+    .whatsapp-widget-wrap:hover .wa-tooltip {
+      opacity: 1;
+    }
+
+    /* Popup Card */
+    .whatsapp-popup-card {
+      position: absolute;
+      bottom: 76px;
+      right: 0;
+      width: 350px;
+      max-width: calc(100vw - 32px);
+      background: #FFFFFF;
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(16px) scale(0.96);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .whatsapp-popup-card.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+    .wa-header {
+      background: var(--green-deep);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+    }
+    .wa-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .wa-avatar {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .wa-avatar svg { width: 24px; height: 24px; color: var(--green-deep); }
+    .wa-online-dot {
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      width: 11px;
+      height: 11px;
+      background: #25D366;
+      border: 2px solid #fff;
+      border-radius: 50%;
+    }
+    .wa-brand-name {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .wa-status-text {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      margin-top: 2px;
+    }
+    .wa-close-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    .wa-close-btn:hover { color: #fff; }
+
+    .wa-chat-body {
+      background: #ECE5DD;
+      background-image: radial-gradient(#d3c6b5 1px, transparent 1px);
+      background-size: 16px 16px;
+      padding: 18px 16px 14px;
+    }
+    .wa-message-bubble {
+      background: #FFFFFF;
+      border-radius: 0 14px 14px 14px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      color: #111b21;
+      line-height: 1.5;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .wa-message-time {
+      font-size: 10px;
+      color: #667781;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .wa-quick-options {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 8px;
+    }
+    .wa-option-btn {
+      background: #FFFFFF;
+      border: 1px solid #dcd7ce;
+      border-radius: 20px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--green-deep);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .wa-option-btn:hover {
+      background: var(--gold-pale);
+      border-color: var(--gold);
+      transform: translateX(3px);
+    }
+
+    .wa-input-row {
+      padding: 10px 14px;
+      background: #F0F2F5;
+      border-top: 1px solid #e1e3e6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .wa-input-row input {
+      flex: 1;
+      border: 1px solid #d9dce0;
+      border-radius: 20px;
+      padding: 9px 14px;
+      font-size: 13px;
+      background: #FFFFFF;
+      outline: none;
+      color: var(--charcoal);
+    }
+    .wa-input-row input:focus {
+      border-color: #25D366;
+    }
+    .wa-send-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #25D366;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .wa-send-btn:hover { transform: scale(1.08); background: #20ba59; }
+    .wa-send-btn svg { width: 17px; height: 17px; color: #fff; transform: translateX(1px); }
+    .wa-direct-link {
+      display: block;
+      text-align: center;
+      font-size: 11px;
+      color: #667781;
+      padding: 6px 10px 8px;
+      background: #F0F2F5;
+      border-top: 1px solid #eaeaea;
+    }
+    .wa-direct-link a {
+      color: var(--green-deep);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 767px) {
+      .whatsapp-widget-wrap { bottom: 20px; right: 20px; }
+      .whatsapp-popup-card { width: calc(100vw - 40px); }
+    }
 
     /* ============================================================
        IGBO PATTERN DIVIDER
@@ -1982,19 +2202,79 @@
   </footer>
 
   <!-- ============================================================
-       WHATSAPP FLOAT
+       WHATSAPP CHAT WIDGET
   ============================================================ -->
-  <a href="https://wa.me/2347026789145?text=Hello%20Coal%20City%20Realty%2C%20I%20am%20interested%20in%20your%20properties."
-     class="whatsapp-float"
-     target="_blank"
-     rel="noopener noreferrer"
-     aria-label="Chat with us on WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-      <path d="M11.998 2C6.481 2 2 6.481 2 12.002c0 1.76.459 3.413 1.261 4.852L2 22l5.335-1.398A9.97 9.97 0 0011.998 22C17.517 22 22 17.519 22 12.002 22 6.481 17.517 2 11.998 2zm0 18.188a8.17 8.17 0 01-4.168-1.142l-.297-.178-3.168.831.846-3.085-.196-.313a8.14 8.14 0 01-1.249-4.3c0-4.519 3.676-8.197 8.198-8.197s8.198 3.678 8.198 8.197c0 4.521-3.676 8.187-8.164 8.187z"/>
-    </svg>
-    <span class="whatsapp-tooltip">Chat on WhatsApp</span>
-  </a>
+  <div class="whatsapp-widget-wrap" id="whatsappWidget">
+    <!-- Chat Popup Box -->
+    <div class="whatsapp-popup-card" id="whatsappPopup" role="dialog" aria-label="WhatsApp live chat widget">
+      <!-- Header -->
+      <div class="wa-header">
+        <div class="wa-header-left">
+          <div class="wa-avatar">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            </svg>
+            <span class="wa-online-dot"></span>
+          </div>
+          <div>
+            <div class="wa-brand-name">Coal City Realty</div>
+            <div class="wa-status-text">Online · 07026789145</div>
+          </div>
+        </div>
+        <button class="wa-close-btn" id="waCloseBtn" aria-label="Close WhatsApp chat">&times;</button>
+      </div>
+
+      <!-- Chat Body -->
+      <div class="wa-chat-body">
+        <div class="wa-message-bubble">
+          <strong>Ndewo! 👋</strong> Welcome to <strong>Coal City Realty</strong>.
+          <br><br>
+          Looking to buy, sell, or rent verified properties in Enugu &amp; the South East? Select an option below or send us a message!
+          <div class="wa-message-time" id="waCurrentTime">Just now</div>
+        </div>
+
+        <!-- Quick Options -->
+        <div class="wa-quick-options">
+          <button class="wa-option-btn" data-msg="Hello Coal City Realty, I want to enquire about luxury houses for sale in GRA / Independence Layout, Enugu.">
+            🏡 Properties for sale in Enugu
+          </button>
+          <button class="wa-option-btn" data-msg="Hello Coal City Realty, I am looking for verified land/plots for sale in Enugu.">
+            📍 Land &amp; plots in Enugu
+          </button>
+          <button class="wa-option-btn" data-msg="Hello Coal City Realty, I would like to schedule a physical property inspection.">
+            📅 Book a property inspection
+          </button>
+          <button class="wa-option-btn" data-msg="Hello Coal City Realty, I am an investor in the diaspora and would like to learn about your South East investment options.">
+            ✈️ Diaspora property investment
+          </button>
+        </div>
+      </div>
+
+      <!-- Message input -->
+      <form class="wa-input-row" id="waMessageForm" onsubmit="handleWaSend(event)">
+        <input type="text" id="waInputText" placeholder="Type a message..." aria-label="Type your message for WhatsApp" />
+        <button type="submit" class="wa-send-btn" aria-label="Send WhatsApp message">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </form>
+      <div class="wa-direct-link">
+        Direct chat: <a href="https://wa.me/2347026789145?text=Hello%20Coal%20City%20Realty%2C%20I%20am%20interested%20in%20your%20properties." target="_blank" rel="noopener noreferrer">07026789145 on WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- Floating Trigger Button -->
+    <button class="whatsapp-trigger-btn" id="waTriggerBtn" aria-label="Open WhatsApp chat with Coal City Realty">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M11.998 2C6.481 2 2 6.481 2 12.002c0 1.76.459 3.413 1.261 4.852L2 22l5.335-1.398A9.97 9.97 0 0011.998 22C17.517 22 22 17.519 22 12.002 22 6.481 17.517 2 11.998 2zm0 18.188a8.17 8.17 0 01-4.168-1.142l-.297-.178-3.168.831.846-3.085-.196-.313a8.14 8.14 0 01-1.249-4.3c0-4.519 3.676-8.197 8.198-8.197s8.198 3.678 8.198 8.197c0 4.521-3.676 8.187-8.164 8.187z"/>
+      </svg>
+      <span class="wa-badge">1</span>
+      <span class="wa-tooltip">Chat with Coal City Realty</span>
+    </button>
+  </div>
 
   <!-- ============================================================
        JAVASCRIPT
@@ -2201,6 +2481,67 @@
         }
       });
     }, { passive: true });
+  
+    // ── WhatsApp Widget Interactions ────────────────────────────
+    const waTriggerBtn = document.getElementById('waTriggerBtn');
+    const waPopup      = document.getElementById('whatsappPopup');
+    const waCloseBtn   = document.getElementById('waCloseBtn');
+    const waInputText  = document.getElementById('waInputText');
+    const waPhoneNum   = '2347026789145';
+
+    function openWhatsAppPopup() {
+      waPopup.classList.add('open');
+      const badge = document.querySelector('.wa-badge');
+      if (badge) badge.style.display = 'none';
+      if (waInputText) setTimeout(() => waInputText.focus(), 200);
+    }
+
+    function closeWhatsAppPopup() {
+      waPopup.classList.remove('open');
+    }
+
+    if (waTriggerBtn) {
+      waTriggerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (waPopup.classList.contains('open')) {
+          closeWhatsAppPopup();
+        } else {
+          openWhatsAppPopup();
+        }
+      });
+    }
+
+    if (waCloseBtn) {
+      waCloseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeWhatsAppPopup();
+      });
+    }
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      const widget = document.getElementById('whatsappWidget');
+      if (widget && !widget.contains(e.target)) {
+        closeWhatsAppPopup();
+      }
+    });
+
+    // Quick option buttons
+    document.querySelectorAll('.wa-option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const msg = btn.getAttribute('data-msg');
+        window.open('https://wa.me/' + waPhoneNum + '?text=' + encodeURIComponent(msg), '_blank');
+      });
+    });
+
+    function handleWaSend(e) {
+      e.preventDefault();
+      const text = waInputText ? waInputText.value.trim() : '';
+      const finalMsg = text || 'Hello Coal City Realty, I am interested in your properties across Enugu.';
+      window.open('https://wa.me/' + waPhoneNum + '?text=' + encodeURIComponent(finalMsg), '_blank');
+      if (waInputText) waInputText.value = '';
+      closeWhatsAppPopup();
+    }
   </script>
 
 </body>
